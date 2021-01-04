@@ -1,0 +1,51 @@
+<script src="static/userprofile.js"></script>
+
+<title> Register GP</title>
+
+<div class="container">
+
+    <h4 style="margin: 75px 0 25px 0">To register a new GP surgery, fill in the following form.</h4>
+
+    <form method='POST' action='/add-gp'>
+        <div class="mb-3">
+            <label for='name' class="form-label">Name:</label>
+            <input type='text' id='name' name='name' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='phoneNumber' class="form-label">Phone Number:</label>
+            <input type='text' id='phoneNumber' name='phoneNumber' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='doorNumber' class="form-label">Number:</label>
+            <input type='text' id='doorNumber' name='doorNumber' class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for='flatName' class="form-label">Flat Name:</label>
+            <input type='text' id='flatName' name='flatName' class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for='streetName' class="form-label">Street Name:</label>
+            <input type='text' id='streetName' name='streetName' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='borough' class="form-label">Borough:</label>
+            <input type='text' id='borough' name='borough' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='postcode' class="form-label">Postcode:</label>
+            <input type='text' id='postcode' name='postcode' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='city' class="form-label">City:</label>
+            <input type='text' id='city' name='city' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='country' class="form-label">Country:</label>
+            <input type='text' id='country' name='country' class="form-control" required>
+        </div>
+        <button type='submit' class="btn btn-primary">Submit</button>
+    </form>
+
+    <div id="pinmessage"></div>
+    
+</div>

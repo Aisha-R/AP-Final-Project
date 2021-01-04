@@ -1,0 +1,10 @@
+.carousel-item>img{
+    height: 500px;
+}
+#copyright {
+    text-align: center;
+}
+.chat-messages {
+    height: 400px;
+    overflow-y: auto;
+}

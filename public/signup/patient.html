@@ -1,0 +1,72 @@
+<script src="static/sign-up.js"></script>
+
+<title>Patient Sign Up</title>
+
+<div class="container">
+
+    <h4 style="margin: 50px 0 50px 0">Fill in your details to sign up.</h4>
+
+    <form method='POST' action='/signup'>
+        <div class="mb-3">
+            <label for='name' class="form-label">Name:</label>
+            <input type='text' id='name' name='name' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='dateOfBirth' class="form-label">Date of Birth:</label>
+            <input type='date' id='dateOfBirth' name='dateOfBirth' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='niNumber' class="form-label">National Insurance Number:</label>
+            <input type='text' id='niNumber' name='username' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='password' class="form-label">Password:</label>
+            <input type='password' id='password' name='password' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='emailAddress' class="form-label">Email Address:</label>
+            <input type='text' id='emailAddress' name='emailAddress' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='phoneNumber' class="form-label">Phone Number:</label>
+            <input type='text' id='phoneNumber' name='phoneNumber' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='doorNumber' class="form-label">Door Number:</label>
+            <input type='text' id='doorNumber' name='doorNumber' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='flatName' class="form-label">Flat Name:</label>
+            <input type='text' id='flatName' name='flatName' class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for='streetName' class="form-label">Street Name:</label>
+            <input type='text' id='streetName' name='streetName' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='borough' class="form-label">Borough:</label>
+            <input type='text' id='borough' name='borough' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='postcode' class="form-label">Postcode:</label>
+            <input type='text' id='postcode' name='postcode' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='city' class="form-label">City:</label>
+            <input type='text' id='city' name='city' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='country' class="form-label">Country:</label>
+            <input type='text' id='country' name='country' class="form-control" required>
+        </div>
+        <label for="gpId">Select a GP:</label>
+        <select class="form-select" id='gpId' name='gpId' required>
+            <option selected disabled hidden></option>
+        </select>
+        <input type='hidden' value='patient' name='user'><br>
+        <button type='submit' class="btn btn-primary">Submit</button>
+    </form>
+
+    <div id="pinmessage"></div>
+    
+</div>

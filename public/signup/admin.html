@@ -1,0 +1,22 @@
+<title>Admin Sign Up</title>
+
+<div class="container">
+
+    <h4 style="margin: 50px 0 50px 0">Fill in these details to register an admin.</h4>
+
+    <form method='POST' action='/signup'>
+        <div class="mb-3">
+        <label for='email' class="form-label">Username:</label>
+        <input type='email' id='email' name='username' class="form-control" required>
+        </div>
+        <div class="mb-3">
+        <label for='password' class="form-label">Password:</label>
+        <input type='password' id='password' name='password' class="form-control" required>
+        </div>
+        <input type='hidden' value='admin' name='user'>
+        <button type='submit' class="btn btn-primary">Submit</button>
+    </form>
+    
+    <div id="pinmessage"></div>
+
+</div>

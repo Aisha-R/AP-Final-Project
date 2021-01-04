@@ -1,0 +1,39 @@
+<script src="static/userprofile.js"></script>
+
+<title>Doctor Profile</title>
+
+<div class="container">
+
+    <h3 style="margin: 50px 0 50px 0">Welcome, </h3>
+
+    <h4>Your details:</h4>
+
+    <table class="table">
+        <tr>
+            <th scope="col">Name:</th>
+            <td id='name'></td>
+        </tr>
+        <tr>
+            <th scope="col">Medical ID:</th>
+            <td id='medicalId'></td>
+        </tr>
+        <tr>
+            <th scope="col">Room ID:</th>
+            <td id='roomId'></td>
+        </tr>
+    </table>
+    
+    <h4 style="margin: 50px 0 10px 0">Your upcoming appointments:</h4>
+
+    <table class="table" id="doctor-appointments"></table>
+
+    <div id="pinmessage"></div>
+
+    <h6 style="display:inline-block">To start chatting with a patient </h6>
+
+    <form action='/chat' style="display:inline-block">
+        <input id="room" type='hidden' value='' name='user'>
+        <button type='submit' class="btn btn-primary">Click here</button>
+    </form>
+    
+</div>

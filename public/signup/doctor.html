@@ -1,0 +1,36 @@
+<script src="static/sign-up.js"></script>
+
+<title> Doctor Sign Up</title>
+
+<div class="container">
+
+    <h4 style="margin: 50px 0 50px 0">Fill in the form to register a doctor.</h4>
+
+    <form method='POST' action='/signup'>
+        <div class="mb-3">
+            <label for='name' class="form-label">Name:</label>
+            <input type='text' id='name' name='name' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='medicalId' class="form-label">Medical ID:</label>
+            <input type='text' id='medicalId' name='username' class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for='password' class="form-label">Password:</label>
+            <input type='password' id='password' name='password' class="form-control" required>
+        </div>
+        <label for="gpId">Select a GP:</label>
+        <select class="form-select" id='gpId' name='gpId' required>
+            <option selected disabled hidden></option>
+        </select>
+        <div class="mb-3">
+            <label for='roomId' class="form-label">Room ID:</label>
+            <input type='text' id='roomId' name='roomId' class="form-control" required>
+        </div>
+        <input type='hidden' value='doctor' name='user'><br>
+        <button type='submit' class="btn btn-primary">Submit</button>
+    </form>
+
+    <div id="pinmessage"></div>
+    
+</div>

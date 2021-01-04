@@ -1,0 +1,50 @@
+</main>
+
+<footer class="container-fluid">
+
+    <div id="footer">
+
+        <h6 id="copyright"></h6>
+
+    </div>
+
+</footer>
+
+</wrapper>
+
+<script>
+
+    $(document).ready(() => {
+        const currentYear = new Date().getFullYear();
+        $("#copyright").text("© " + currentYear + ", NHS GP. All Rights Reserved.");
+
+        $.get('/logged', logged => {
+            
+            if (logged) {
+                $('#afterme').after('<a href="" id="logout"></a>');
+                $('#logout').html('Log Out');
+                $('#logout').attr('href', '/logout');
+            } else {
+                $('#logout').html('');
+                $('#logout').attr('', '');
+            }
+
+        }).fail(function(error) {
+            console.log(error);
+        });
+
+        $.get('/getMessage', message => {
+
+            if (message != null) { 
+
+                $("#pinmessage").append(`<p style="color:red">${message}</p>`);
+                
+            }
+
+        });
+    });
+    
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+</html>
