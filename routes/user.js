@@ -9,6 +9,10 @@ const Appointment = require('../models/Appointment.js');
 const moment = require('moment');
 const Gp = require('../models/Gp.js');
 
+router.get('/which-user', (req, res) => {
+    return res.json({response: req.session.user});
+});
+
 router.get('/select-gp', async (req, res) => {
     
     try {
