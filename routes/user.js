@@ -10,15 +10,25 @@ const moment = require('moment');
 const Gp = require('../models/Gp.js');
 
 router.get('/select-gp', async (req, res) => {
-
+    
     try {
         
-        const gps = await Gp.query().select();
-
-        let data = {};
-
-        for ( gp in gps ) {
-            data[`${gp}`] = [gps[gp].id, gps[gp].name];
+        let data = {}; 
+    
+        if (req.session.user == "admin") {
+            
+            const temp = await Admin.query().select().where('email', req.session.username).withGraphFetched('gps');
+            const store = temp[0].gps;
+            for ( gp in store ) {
+                data[`${gp}`] = [store[gp].id, store[gp].name];
+            }
+        } else {
+            
+            const gps = await Gp.query().select();
+            
+            for ( gp in gps ) {
+                data[`${gp}`] = [gps[gp].id, gps[gp].name];
+            }
         }
 
         return res.json(data);

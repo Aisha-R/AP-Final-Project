@@ -64,7 +64,8 @@ $(document).ready( () => {
                     $(`#gps > tr:nth-child(${temp}) > td:eq(3)`).append(`<a href="/deletegp/${gps[gp].id}">Delete</a>`);
                 }
             } else {
-                $('table').after('<p>You are not listed as admin for any GPs.</p>')
+                $('table').after('<p>You are not listed as admin for any GPs.</p>');
+                $('#removeLink').remove();
             }
             
         } else if ( details.user == "doctor" ) {
@@ -109,7 +110,7 @@ $(document).ready( () => {
                 $('#add-appts').append(`<tr><td>${data[entry][0]}</td><td>${data[entry][1]}</td><td>${data[entry][2]}</td><td>${data[entry][3]}</td><td><a href="/deleteappt/${data[entry][4]}">Delete</a></td></tr>`);
             }
         } else {
-            $('#appointments').append('<p>You have no upcoming appointments.</p>');
+            $('#patient-appointments').append('<h6 style="margin-top:25px;text-indent:25px">You have no upcoming appointments.</h6>');
         }
     
     }).fail(function(error) {
@@ -127,7 +128,7 @@ $(document).ready( () => {
                 $('#add-doctor-appts').append(`<tr><td>${data[entry][0]}</td><td>${data[entry][1]}</td><td>${data[entry][2]}</td></tr>`);
             }
         } else {
-            $('#appointments').append('<p>You have no upcoming appointments.</p>');
+            $('#appointments').append('<h6 style="margin-top:25px;text-indent:25px">You have no upcoming appointments.</h6>');
         }
     
     }).fail(function(error) {

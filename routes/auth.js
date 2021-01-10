@@ -67,8 +67,14 @@ router.post('/login', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
    
-    const { username, password, user } = req.body;
+    const { username, password, repeatPassword, user } = req.body;
+    
+    if (password.length < 8 || password != repeatPassword ) {
 
+        req.session.message = "Passwords must match and be 8 characters or more.";
+        console.log("this you?");
+        return res.redirect(`/${user}signup`);
+    } else {
         try {
             let userFound;
             if (user == 'admin') {
@@ -100,8 +106,9 @@ router.post('/signup', async (req, res) => {
                     req.session.user = user;
                     req.session.username = username;
                     req.session.name = user;
-                    return res.redirect(`/userprofile`);
 
+                    return res.redirect('/userprofile');
+        
                 } else if (user == 'doctor') {
 
                     const { name, gpId, roomId } = req.body;
@@ -113,13 +120,9 @@ router.post('/signup', async (req, res) => {
                         gpId: gpId,
                         roomId: roomId
                     });
-
-                    req.session.user = user;
-                    req.session.username = username;
-                    req.session.name = user;
-
-                    return res.redirect(`/userprofile`);
-
+                    
+                    return res.redirect('/userprofile');
+                
                 } else if (user == 'patient') {
 
                     const { name, dateOfBirth, emailAddress, phoneNumber, gpId } = req.body;
@@ -149,8 +152,8 @@ router.post('/signup', async (req, res) => {
                     req.session.user = user;
                     req.session.username = username;
                     req.session.name = registeredUser.name;
-
-                    return res.redirect(`/userprofile`);
+                    
+                    return res.redirect('/userprofile');
                 }
         
             }
@@ -161,6 +164,7 @@ router.post('/signup', async (req, res) => {
 
             return res.redirect('/');
         }
+    }
 });
 
 router.post('/add-gp', async (req, res) => {
@@ -266,6 +270,7 @@ router.get('/deletepatient/:patientId', async (req, res) => {
         await PatientAddress.query().deleteById(patient[0].patientAddressId);
         
         req.session.destroy();
+        req.session = null;
 
         return res.redirect('/');
 
@@ -287,6 +292,7 @@ router.get('/logged', (req, res) => {
 
 router.get('/logout', (req, res) => {
     req.session.destroy();
+    req.session = null;
     return res.redirect('/');
 });
 
