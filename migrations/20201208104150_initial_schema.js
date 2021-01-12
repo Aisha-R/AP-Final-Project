@@ -63,6 +63,7 @@ exports.up = function(knex) {
         table.string('name').notNullable();
         table.string('medical_id').unique().notNullable();
         table.string('password').notNullable();
+        table.string('email_address');
         table.integer('gp_id').unsigned().notNullable();
         table.foreign('gp_id').references('gps.id');
         table.integer('room_id');

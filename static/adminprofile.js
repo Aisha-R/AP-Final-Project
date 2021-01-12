@@ -4,7 +4,7 @@ $(document).ready( () => {
 
         const { gps } = details;
         const { doctors } = details;
-
+        
         if ( gps.length > 0 ) {
             $('#gp-admin').append('<h4>Your GP surgeries:</h4>');
             $('thead').append(`<tr><th scope="col">Name</th><th scope="col">Phone Number</th><th scope="col">Address</th><th scope="col">Remove</th></tr>`);
@@ -34,6 +34,12 @@ $(document).ready( () => {
                         $(`#${gps[gp].id} > tbody`).append(`<tr><td>${doctors[entry].medicalId}</td><td>${doctors[entry].name}</td><td>${doctors[entry].roomId}</td><td><a href="/deletedoctor/${doctors[entry].id}">Delete</a></td></tr>`);
                     
                     }
+                }
+                const rows = $(`#${gps[gp].id} > tbody`).children().length;
+                
+                if (rows < 1) {
+                    $(`#${gps[gp].id}`).remove();
+                    $(`#doctors > h5:eq(${gp})`).after('<p>There are no doctors listed at this GP.</p>');
                 }
             }
         } else {

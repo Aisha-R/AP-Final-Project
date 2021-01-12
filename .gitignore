@@ -4,4 +4,4 @@ config.json
 
 node_modules
 
-fetch.html
+nodemailerCredentials.js

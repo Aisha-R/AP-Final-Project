@@ -11,6 +11,10 @@ const GpAddress = require('../models/GpAddress.js');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
+const nodemailer = require('nodemailer');
+const credentials = require('../config/nodemailerCredentials.js');
+var transporter = nodemailer.createTransport(credentials);
+
 router.post('/login', async (req, res) => {
     
     const { username, password, user } = req.body;
@@ -72,7 +76,7 @@ router.post('/signup', async (req, res) => {
     if (password.length < 8 || password != repeatPassword ) {
 
         req.session.message = "Passwords must match and be 8 characters or more.";
-        console.log("this you?");
+        
         return res.redirect(`/${user}signup`);
     } else {
         try {
@@ -84,7 +88,7 @@ router.post('/signup', async (req, res) => {
             } else if (user == 'patient') {
                 userFound = await Patient.query().select().where('niNumber', username).limit(1);
             }
-        
+            
             if ( userFound.length > 0 ) {
 
                 req.session.message = "User already exists.";
@@ -102,26 +106,49 @@ router.post('/signup', async (req, res) => {
                         email: username,
                         password: hashedPassword
                     });
-
+                    
                     req.session.user = user;
                     req.session.username = username;
                     req.session.name = user;
 
-                    return res.redirect('/userprofile');
+                    const mailOptions = {
+
+                        from: 'nodemandatory@gmail.com',
+                        to: username,
+                        subject: 'Registration Confirmation',
+                        text: 'Welcome to NHS GP!\n\nTo begin using our services login to the website with your email address & password.'
+
+                    };
         
                 } else if (user == 'doctor') {
 
-                    const { name, gpId, roomId } = req.body;
+                    const { name, gpId, roomId, emailAddress } = req.body;
                     
                     registeredUser = await Doctor.query().insert({
                         name: name,
                         medicalId: username,
                         password: hashedPassword,
+                        emailAddress: emailAddress,
                         gpId: gpId,
                         roomId: roomId
                     });
                     
-                    return res.redirect('/userprofile');
+                    const mailOptions = {
+
+                        from: 'nodemandatory@gmail.com',
+                        to: emailAddress,
+                        subject: 'Registration Confirmation',
+                        text: 'Welcome to NHS GP!\n\nTo begin using our services login to the website with your Medical ID & password.'
+
+                    };
+
+                    await transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log('Email sent: ' + info.response);
+                        }
+                    });
                 
                 } else if (user == 'patient') {
 
@@ -152,10 +179,26 @@ router.post('/signup', async (req, res) => {
                     req.session.user = user;
                     req.session.username = username;
                     req.session.name = registeredUser.name;
-                    
-                    return res.redirect('/userprofile');
+
+                    const mailOptions = {
+
+                        from: 'nodemandatory@gmail.com',
+                        to: emailAddress,
+                        subject: 'Registration Confirmation',
+                        text: 'Welcome to NHS GP!\n\nTo begin using our services login to the website with your National Insurance number & password.'
+
+                    };
+
+                    await transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log('Email sent: ' + info.response);
+                        }
+                    });
                 }
-        
+            
+                return res.redirect('/userprofile');
             }
 
         } catch (error) {
