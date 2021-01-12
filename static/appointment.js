@@ -43,7 +43,7 @@ $(document).ready( () => {
     });
 
     $.get('/appointment-details', {option: date}, doctors => {
-        
+        console.log(doctors);
         renderTable(doctors);
 
     });

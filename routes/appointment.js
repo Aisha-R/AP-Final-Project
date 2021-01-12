@@ -36,10 +36,9 @@ router.get('/appointment-details', async (req, res) => {
 
         await knex.raw('DELETE FROM appointments WHERE date_time < now()');
         
-        let data = {};
+        const data = [];
 
-        let priorSlots = {};
-        
+        const priorSlots = [];
 
         const start = moment(dateFormat + "T08:00:00.000Z");
     
@@ -50,7 +49,7 @@ router.get('/appointment-details', async (req, res) => {
             const inMinutes = diff.slice(0, 2) * 60 + parseInt(diff.slice(3));
             const duration = Math.ceil(inMinutes / 20);
             for ( let i = 1 ; i <= duration ; i++ ) {
-                priorSlots[`slot${i}`] = i;
+                priorSlots.push(i);
             }
         }
 
@@ -58,7 +57,7 @@ router.get('/appointment-details', async (req, res) => {
             
             const alt = await knex.raw(`SELECT * FROM appointments WHERE DATE(date_time) = DATE("${dateFormat}") AND doctor_id = ${doctors[entry].id}`);
             
-            let slots = {};
+            const slots = [];
 
             for ( index in alt[0] ) {
                 
@@ -68,11 +67,11 @@ router.get('/appointment-details', async (req, res) => {
         
                 const minutes = result.slice(0, 2) * 60 + parseInt(result.slice(3));
                 
-                slots[`slot${index}`] = minutes / 20 + 1;
+                slots.push(minutes / 20 + 1);
                 
             }
 
-            data[`doctor${entry}`] = {
+            data[entry] = {
                 medicalId: doctors[entry].medicalId, 
                 name: doctors[entry].name, 
                 slots: slots,
