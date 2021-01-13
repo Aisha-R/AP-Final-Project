@@ -59,12 +59,13 @@ $(document).ready( () => {
             
             const rows = $('tbody > tr').children().length
             const titles = $('thead > tr').children().length;
-
-            for ( let i = 1 ; i < titles ; i++ ) {
-                $(`thead > tr > th:eq(${1})`).remove();
+            console.log("rows: ", rows);
+            console.log("titles: ", titles);
+            for ( let i = 2 ; i < titles ; i++ ) {
+                $(`thead > tr > th:eq(${2})`).remove();
         
                 for ( let y = 0 ; y < rows ; y++ ) {
-                    $(`tbody > tr:eq(${y}) > td:eq(${0})`).remove();
+                    $(`tbody > tr:eq(${y}) > td:eq(${1})`).remove();
                 }
             } 
 

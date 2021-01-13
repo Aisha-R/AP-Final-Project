@@ -113,7 +113,7 @@ router.post('/signup', async (req, res) => {
 
                     const mailOptions = {
 
-                        from: 'nodemandatory@gmail.com',
+                        from: 'NHS GP',
                         to: username,
                         subject: 'Registration Confirmation',
                         text: 'Welcome to NHS GP!\n\nTo begin using our services login to the website with your email address & password.'
@@ -135,7 +135,7 @@ router.post('/signup', async (req, res) => {
                     
                     const mailOptions = {
 
-                        from: 'nodemandatory@gmail.com',
+                        from: 'NHS GP',
                         to: emailAddress,
                         subject: 'Registration Confirmation',
                         text: 'Welcome to NHS GP!\n\nTo begin using our services login to the website with your Medical ID & password.'
