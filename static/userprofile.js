@@ -1,13 +1,43 @@
 const tel = '<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvC5jImv7gZA5QP1QYT7Y9O_TBn3hjeieJRw&usqp=CAU" style="width:5%;height:10%" alt="...">';
 const gen = '<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRphGYGPo2ADD0X0u9j7f2vHurWvwr8z-Bk0A&usqp=CAU" style="width:5%;height:10%" alt="...">';
 
+const socket = io("/chat");
+
+let username;
+let room;
+let userType;
+
+function openForm() {
+    $("#myForm").css("display", "block");
+}
+
+function start() {
+    openForm();
+    //Join chatroom
+    socket.emit("join", {username, room, userType});
+}
+  
+function closeForm() {
+    $("#myForm").css("display", "none");
+}
+
+//Message from server
+socket.on('message', message => {
+    outputMessage(message);
+    $('.chat-messages').scrollTop($('.chat-messages').height());
+});
+
 $(document).ready( () => {
 
     $.get('/user-details', details => {
 
         if ( details.user == "doctor" ) {
 
+            userType = details.user;
+
             const { name, medicalId, roomId } = details.userFound;
+
+            username = name;
             
             $('h3').append(name);
             $('#name').text(name);
@@ -15,9 +45,55 @@ $(document).ready( () => {
             $('#roomId').text(roomId);
             $('#room').val(details.user);
 
+            closeForm();
+
+            const patients = details.patients;
+            
+            for (entry in patients) {
+                $('#room').append(`<option value='${patients[entry].room}'>${patients[entry].username}</option>`);
+            };
+
+            const rooms = $('#room').children().length;
+            
+            if (rooms > 1) {
+                $('#dropdown').css('display', 'block');
+            } else {
+                $('#delete-text').before('<h5 id="nopatients">At present there are no patients online to chat with.</h5><br>')
+            }
+
+            socket.on('room', userTemp => {
+                $('#room').append(`<option value='${userTemp.room}'>${userTemp.username}</option>`);
+                $('#dropdown').css('display', 'block');
+                $('#nopatients').remove();
+            });
+
+            $('#room').on('change', function() {
+                
+                room = $('#room').val();
+                
+                //Join chatroom
+                socket.emit("join", {username, room, userType});
+                
+                openForm();
+            });
+            
+            socket.on(name, data => {
+                let message = "Welcome to your chat.";
+
+                $('.chat-messages').append(`<div class="p-3 bg-dark message"><p class="p-3 bg-light text" style="margin-bottom: 0px;">${message}</p></div>`);
+                $('.chat-messages').scrollTop($('.chat-messages').height());
+            });
+
         } else if ( details.user == "patient" ) {
 
+            userType = details.user;
+
+            closeForm();
+
             const { id, name, dateOfBirth, phoneNumber, emailAddress, niNumber } = details.userFound;
+
+            room = niNumber;
+            username = name;
 
             $('h3').append(name);
             $('#name').text(name);
@@ -26,8 +102,17 @@ $(document).ready( () => {
             $('#emailAddress').text(emailAddress);
             $('#niNumber').text(niNumber);
             $('#delete-account').attr('href', `/deletepatient/${id}`);
-            $('#room').val(`${name}`);
+            
+            socket.on(name, data => {
+                let message = "Welcome to your chat.";
 
+                if (data.userTemp.type == "patient") {
+                    message = data.patient;
+                }
+
+                $('.chat-messages').append(`<div class="p-3 bg-dark message"><p class="p-3 bg-light text" style="margin-bottom: 0px;">${message}</p></div>`);
+                $('.chat-messages').scrollTop($('.chat-messages').height());
+            });
         }
 
     }).fail(function(error) {
@@ -84,4 +169,25 @@ $(document).ready( () => {
         console.log(error);
     });
 
+    $("#myForm").submit(function(e){
+        e.preventDefault();
+
+        const text = $("#msg").val();
+
+        const message = {
+            username: username,
+            text: text
+        };
+        
+        //Emit message to server
+        socket.emit("chatMessage", message);
+
+        $('#msg').val('');
+        $('#msg').focus();
+    });
+
 });
+
+function outputMessage(message) {
+    $('.chat-messages').append(`<div class="p-3 bg-white message"><p class="meta">${message.username}<span> ${message.time}</span></p><p class="p-3 bg-light text-dark text">${message.text}</p></div>`);
+}

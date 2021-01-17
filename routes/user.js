@@ -9,6 +9,8 @@ const Appointment = require('../models/Appointment.js');
 const moment = require('moment');
 const Gp = require('../models/Gp.js');
 
+const { getPatients } = require('../utils/users.js');
+
 router.get('/which-user', (req, res) => {
     return res.json({response: req.session.user});
 });
@@ -52,16 +54,17 @@ router.get('/select-gp', async (req, res) => {
 router.get('/user-details', async (req, res) => {
 
     const { user, username } = req.session;
-
+    
     try {
 
         const knex = Appointment.knex();
         await knex.raw('DELETE FROM appointments WHERE date_time < now()');
 
         let userFound;
+        let patients = [];
 
         if (user == 'doctor') {
-
+            patients = getPatients('patient');
             userFound = await Doctor.query().select().where('medicalId', username).limit(1);
             const allowed = ["name", "medicalId", "roomId"];
             userFound = filtering(allowed, userFound[0]);
@@ -74,7 +77,7 @@ router.get('/user-details', async (req, res) => {
 
         }
         
-        return res.json({ user: user, userFound: userFound });
+        return res.json({ user: user, userFound: userFound, patients: patients });
 
     } catch (error) {
 

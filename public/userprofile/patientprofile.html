@@ -1,3 +1,6 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" crossorigin="anonymous"></script>
+<script src='/socket.io/socket.io.js'></script>
+<link rel="stylesheet" type="text/css" href='static/css/chat.css'>
 <script src="static/userprofile.js"></script>
 
 <title>Patient Profile</title>
@@ -37,12 +40,18 @@
 
     <div id="pinmessage"></div>
 
-    <h6 style="display:inline-block;margin:50px 0 50px 0">To start chatting with a doctor </h6>
-    
-    <form action='/chat' style="display:inline-block">
-        <input id="room" type='hidden' value='' name='user'>
-        <button type='submit' class="btn btn-primary">Start Chat</button>
-    </form>
+    <button type='button' class="btn btn-primary open-button" onclick="start()">Start Chat</button>
 
     <h6 style="margin-bottom: 50px">To delete your account <a id="delete-account" href="">click here</a>.</h6>
+
+    <div class="chat-popup">
+        <form class="bg-light form-container" id="myForm">
+            <h4 style="display:inline;">Chat</h4>
+            <button type="button" style="float:right;" class="btn-close" onclick="closeForm()" aria-label="Close"></button>
+            <div class="chat-messages"></div>
+            <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" class="form-control"/>
+            <br>
+          <button type="submit" class="btn chat-btn btn-primary btn-sm">Send</button>
+        </form>
+      </div>
 </div>

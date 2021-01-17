@@ -24,7 +24,6 @@ const doctorProfile = fs.readFileSync('public/userprofile/doctorprofile.html', '
 const patientProfile = fs.readFileSync('public/userprofile/patientprofile.html', 'utf8');
 const appointment = fs.readFileSync('public/appointment/appointment.html', 'utf8');
 const footer = fs.readFileSync('public/fragments/footer.html', 'utf8');
-const chat = fs.readFileSync('public/chat/chat.html', 'utf8');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -55,38 +54,36 @@ io.use( (socket, next) => {
 });
 
 const formatMessage = require('./utils/messages.js');
-const { userJoin, getCurrentUser, userLeave } = require('./utils/users.js');
-const admin = 'Admin';
+const { userJoin, getCurrentUser, userLeave, getPatients } = require('./utils/users.js');
+const admin = 'admin';
 
 const manager = io.of("/chat").on('connection', socket => {
-    console.log("Socket joined ", socket.id);
 
-    socket.on("initialise", user => {
-        socket.broadcast.emit('room', user);
+    socket.on("join", ({room, username, userType}) => {
         
-    });
-
-    socket.on("join", ({username, user}) => {
+        const userTemp = userJoin(socket.id, username, room, userType);
         
-        const userTemp = userJoin(socket.id, username);
+        socket.join(room);
 
+        const patient = "The doctor will be with you in a moment.";
+    
         //Welcomes current user
-        manager.to(user).emit('admin', 'Welcome to your chat.'); 
-        
-        socket.join(user);
+        manager.to(room).emit(username, {userTemp, patient}); 
+
+        socket.broadcast.emit('room', userTemp);
 
         //Actual messages
         socket.on('chatMessage', message => {
             const userTemp = getCurrentUser(socket.id);
-            manager.to(user).emit("message", formatMessage(userTemp.username, message.text));
+            manager.to(room).emit("message", formatMessage(userTemp.username, message.text));
         });
 
         //Runs when client disconnects
         socket.on('disconnect', () => {
             const userTemp = userLeave(socket.id);
-
-            if (user) {
-                manager.to(user).emit('admin', `${userTemp.username} has left the chat`);
+            
+            if (room) {
+                manager.to(room).emit(admin, `${userTemp.username} has left the chat`);
             }
         });
     });
@@ -121,9 +118,6 @@ app.use(userRoute);
 
 const appointmentRoute = require('./routes/appointment.js');
 app.use(appointmentRoute);
-
-const chatRoute = require('./routes/chat.js');
-app.use(chatRoute);
 
 // Set up Objection w/ knex
 
@@ -179,16 +173,6 @@ app.get('/userprofile', (req, res) => {
         return res.send(header + doctorProfile + footer); 
     } else if ( req.session.user == "patient" ) {
         return res.send(header + patientProfile + footer); 
-    } else {
-        return res.redirect('/');
-    }
-});
-
-app.get('/chat', (req, res) => {
-    if ( req.session.user == "doctor" ) {
-        return res.send(header + chat + footer); 
-    } else if ( req.session.user == "patient" ) {
-        return res.send(header + chat + footer); 
     } else {
         return res.redirect('/');
     }
