@@ -10,7 +10,7 @@ exports.seed = function(knex) {
         if (doctors.length >= 1) {
 
           return knex('appointments').insert([
-            {type: 'telephone', date_time: '2020-12-29 14:45:00', patient_id: patients[0].id, doctor_id: doctors[0].id}
+            {type: 'general', date_time: '2021-01-18 14:40:00', patient_id: patients[0].id, doctor_id: doctors[0].id},
           ]);
 
         } else {

@@ -8,7 +8,7 @@ exports.seed = function(knex) {
         if (admins.length >= 1) {
 
           return knex('gps').insert([
-            {name: 'Lincoln Road Medical Practice', phone_number: '02083678989', gp_address_id: gp_addresses[0].id, admin_id: admins[1].id},
+            {name: 'Lincoln Road Medical Practice', phone_number: '02083678989', gp_address_id: gp_addresses[0].id, admin_id: admins[0].id},
             {name: 'Eagle House Surgery', phone_number: '020 8805 8611', gp_address_id: gp_addresses[1].id, admin_id: admins[1].id}
           ]);
 
