@@ -326,6 +326,20 @@ exports.delete_gp = async (req, res) => {
     }
 }
 
+exports.delete_admin = async (req, res) => {
+    try {
+
+        await Admin.query().deleteById(req.params.adminId);
+
+        return res.redirect('/');
+
+    } catch (error) {
+        req.session.message = "All your associated GP's and doctors must first be deleted separately.";
+
+        return res.redirect('/userprofile');
+    }
+}
+
 exports.is_logged_in = (req, res) => {
     if ( req.session.username != undefined ) {
         return res.json(true);

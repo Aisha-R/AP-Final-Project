@@ -16,6 +16,8 @@ router.get('/deletegp/:gpId', AuthController.delete_gp);
 
 router.get('/deletepatient/:patientId', AuthController.delete_patient);
 
+router.get('/deleteadmin/:adminId', AuthController.delete_admin);
+
 router.get('/logged', AuthController.is_logged_in);
 
 router.get('/logout', AuthController.logout);

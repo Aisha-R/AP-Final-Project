@@ -95,6 +95,8 @@ exports.get_admin_details = async (req, res) => {
 
         await knex.raw('DELETE FROM appointments WHERE date_time < now()');
 
+        const admin = await Admin.query().select('id').where('email', username).limit(1);
+        
         let userFound;
         let adminWithGps;
 
@@ -131,6 +133,7 @@ exports.get_admin_details = async (req, res) => {
         }
 
         const userDetails = {
+            adminId: admin[0].id,
             user: user,
             userFound: userFound,
             gps: store,

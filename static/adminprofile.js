@@ -4,6 +4,7 @@ $(document).ready( () => {
 
         const { gps } = details;
         const { doctors } = details;
+        const { adminId } = details;
         
         if ( gps.length > 0 ) {
             $('#gp-admin').append('<h4>Your GP surgeries:</h4>');
@@ -46,10 +47,13 @@ $(document).ready( () => {
             $('table').after('<p>You are not listed as admin for any GPs.</p>');
             $('#removeLink').remove();
         }
+
+        $('#delete-admin').attr('href', `/deleteadmin/${adminId}`);
             
     }).fail(function(error) {
 
         console.log(error);
 
     });
+    
 });
